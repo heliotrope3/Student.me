@@ -1,5 +1,6 @@
 import pygame
-
+from promptData import prompts
+pygame.font.init()
 
 WIDTH, HEIGHT = 600, 750
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -7,6 +8,8 @@ pygame.display.set_caption('Student.me')
 
 #background colour
 BACKGROUND = (40, 45, 50)
+
+TEXT_FONT = pygame.font.SysFont('comicsans', 80)
 
 #drawing game screen
 def draw_window(state):
@@ -16,7 +19,13 @@ def draw_window(state):
     pygame.display.update()
 
 def game_screen():
-    pygame.draw.rect(WIN, (255, 0, 0), pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 200, 100))
+    prompt = prompts["tests"][0]
+    pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(WIDTH // 4 - 100, HEIGHT // 7 - 50, 500, 400))
+    WIN.blit(TEXT_FONT.render(prompt.name, 1, (0, 0, 0)), (WIDTH // 2 - 130, HEIGHT // 3 - 25))
+    pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(WIDTH // 2 - 250, HEIGHT - 200, 200, 100))
+    pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(WIDTH - 250, HEIGHT - 200, 200, 100))
+    WIN.blit(TEXT_FONT.render(prompt.opt1.name, 1, (0, 0, 0)), (WIDTH - 220, HEIGHT - 170))
+    WIN.blit(TEXT_FONT.render(prompt.opt2.name, 1, (0, 0, 0)), (WIDTH // 2 - 190, HEIGHT - 170))
 
 #run game
 def main():
