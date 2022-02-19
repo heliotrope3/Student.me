@@ -1,2 +1,2 @@
 # Student.me
-student simulator game for CalgaryHacks 2020
+Student simulator game for CalgaryHacks 2020.
