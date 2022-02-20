@@ -3,7 +3,7 @@ from Prompt import Prompt
 
 prompts = {
     "tests": [
-        Prompt("Math Test", Task("Study", -10), Task("Cry", 10))
+        Prompt("Math Test Longer", Task("Study", -10), Task("Cry", 10))
     ],
     "downtime": [
         Prompt("You have some downtime", Task("Study", -10), Task("Watch Netflix", 10))
