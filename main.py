@@ -33,13 +33,13 @@ def draw_select_screen():
 def draw_pause_screen(student):
     WIN.fill((237, 255, 238))
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 - 110, 400, 70))
-    pygame.draw.rect(WIN, (242, 237, 255), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 - 105, 390, 60))
+    pygame.draw.rect(WIN, (253, 255, 209), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 - 105, 390, 60))
     WIN.blit(MEDIUM_FONT.render("Resume", 1, (0, 0, 0)), (WIDTH // 2 - 65, HEIGHT // 2 - 100))
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 + 10, 400, 70))
-    pygame.draw.rect(WIN, (230, 239, 255), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 15, 390, 60))
+    pygame.draw.rect(WIN, (255, 232, 238), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 15, 390, 60))
     WIN.blit(MEDIUM_FONT.render("Restart", 1, (0, 0, 0)), (WIDTH // 2 - 55, HEIGHT // 2 + 20))
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 + 130, 400, 70))
-    pygame.draw.rect(WIN, (230, 239, 255), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 135, 390, 60))
+    pygame.draw.rect(WIN, (237, 255, 238), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 135, 390, 60))
     WIN.blit(MEDIUM_FONT.render("Menu", 1, (0, 0, 0)), (WIDTH // 2 - 45, HEIGHT // 2 + 140))
     pygame.display.update()
 
@@ -59,7 +59,7 @@ def draw_end_screen(student):
     elif student.health == 0:
         WIN.fill((237, 255, 238))
         WIN.blit(TEXT_FONT.render("Game Over", 1, (0, 0, 0)), (WIDTH // 2 - 125, 100))
-        display_text(MEDIUM_FONT, ["You got too sick and", "had to leave school"], (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
+        display_text(MEDIUM_FONT, ["You got too sick and", "had to leave school :("], (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
     else:
         WIN.fill((237, 255, 238))
         WIN.blit(TEXT_FONT.render("Congratulations", 1, (0, 0, 0)), (WIDTH // 2 - 175, 100))
@@ -100,7 +100,7 @@ def draw_game_screen(student):
     pygame.draw.rect(WIN, (255, 242, 120), pygame.Rect(220, 180, (350 * (student.happiness / student.maxes["happiness"])) // 1, 30))
 
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH//2 - 55, HEIGHT - 95, 110, 60))
-    pygame.draw.rect(WIN, (254, 255, 232), pygame.Rect(WIDTH//2 - 50, HEIGHT - 90, 100, 50))
+    pygame.draw.rect(WIN, (253, 255, 209), pygame.Rect(WIDTH//2 - 50, HEIGHT - 90, 100, 50))
     WIN.blit(SMALL_FONT.render("PAUSE", 1, (0, 0, 0)), (WIDTH // 2 - 40, HEIGHT - 85))
     pygame.display.update()
 
@@ -108,7 +108,7 @@ def draw_game_screen(student):
 def main():
     student = Student("uni")
     student.health = 0
-    state = 'end'
+    state = 'pause'
     run = True
     while run:
 
