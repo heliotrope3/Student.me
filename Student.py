@@ -15,7 +15,7 @@ class Student:
                 "happiness": 150,
             }
         else:
-            self.stress = 60
+            self.stress = 70
             self.smarts = 130
             self.happiness = 70
             self.maxes = {
