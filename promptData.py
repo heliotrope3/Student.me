@@ -5,11 +5,11 @@ from Prompt import Prompt
 
 prompts = {
     "schoolwork": [
-        Prompt(["Math Test"], Task(["Study"], 0, -10, 10, -5), Task(["Cry"], 0, 10, -5, -5)),
-        Prompt(["Science Test"], Task(["Study"], 0, -10, 15, -5), Task(["Cry"], 0, 15, -10, -5)),
-        Prompt(["English", "Assignment"], Task(["Read"], 0, -15, 10, 5), Task(["Play"], 0, 10, -10, 5)),
-        Prompt(["Geography Test"], Task(["Study"], 0, -5, 10, 0), Task(["Play"], 5, 10, -5, 5)),
-        Prompt(["History", "Project"], Task(["Do it"], 0, -10, 10, 0), Task(["Cry"], 0, 10, -5, -5))
+        Prompt(["You have a", "Math Test"], Task(["Study"], 0, -10, 10, -5), Task(["Cry"], 0, 10, -5, -5)),
+        Prompt(["You have a", "Science Test"], Task(["Study"], 0, -10, 15, -5), Task(["Cry"], 0, 15, -10, -5)),
+        Prompt(["You have an", "English", "Assignment"], Task(["Read"], 0, -15, 10, 5), Task(["Play"], 0, 10, -10, 5)),
+        Prompt(["You have a", "Geography Test"], Task(["Study"], 0, -5, 10, 0), Task(["Play"], 5, 10, -5, 5)),
+        Prompt(["You have a", "History Project"], Task(["Do it"], 0, -10, 10, 0), Task(["Cry"], 0, 10, -5, -5))
     ],
     
     "extra-time": [

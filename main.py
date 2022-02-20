@@ -1,6 +1,7 @@
 import pygame
 from promptData import prompts
 from Student import Student
+import random
 pygame.font.init()
 
 WIDTH, HEIGHT = 600, 750
@@ -30,13 +31,13 @@ def draw_select_screen():
     WIN.blit(MEDIUM_FONT.render("University (Hard)", 1, (0, 0, 0)), (WIDTH // 2 - 115, HEIGHT // 2 + 110))
     pygame.display.update() 
 
-def draw_pause_screen(student):
-    WIN.fill((237, 255, 238))
+def draw_pause_screen():
+    WIN.fill((255, 232, 238))
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 - 110, 400, 70))
-    pygame.draw.rect(WIN, (253, 255, 209), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 - 105, 390, 60))
+    pygame.draw.rect(WIN, (237, 255, 238), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 - 105, 390, 60))
     WIN.blit(MEDIUM_FONT.render("Resume", 1, (0, 0, 0)), (WIDTH // 2 - 65, HEIGHT // 2 - 100))
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 + 10, 400, 70))
-    pygame.draw.rect(WIN, (255, 232, 238), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 15, 390, 60))
+    pygame.draw.rect(WIN, (237, 255, 238), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 15, 390, 60))
     WIN.blit(MEDIUM_FONT.render("Restart", 1, (0, 0, 0)), (WIDTH // 2 - 55, HEIGHT // 2 + 20))
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 200, HEIGHT // 2 + 130, 400, 70))
     pygame.draw.rect(WIN, (237, 255, 238), pygame.Rect(WIDTH // 2 - 195, HEIGHT // 2 + 135, 390, 60))
@@ -44,19 +45,19 @@ def draw_pause_screen(student):
     pygame.display.update()
 
 def draw_end_screen(student):
-    if student.stress == student.maxes["stress"]:
+    if student.stress >= student.maxes["stress"]:
         WIN.fill((237, 255, 238))
         WIN.blit(TEXT_FONT.render("Game Over", 1, (0, 0, 0)), (WIDTH // 2 - 125, 100))
         display_text(MEDIUM_FONT, ["You became too stressed", "and dropped out"], (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
-    elif student.happiness == 0:
+    elif student.happiness <= 0:
         WIN.fill((237, 255, 238))
         WIN.blit(TEXT_FONT.render("Game Over", 1, (0, 0, 0)), (WIDTH // 2 - 125, 100))
         display_text(MEDIUM_FONT, ["You became too depressed", "and dropped out"], (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
-    elif student.smarts == 0:
+    elif student.smarts <= 0:
         WIN.fill((237, 255, 238))
         WIN.blit(TEXT_FONT.render("Game Over", 1, (0, 0, 0)), (WIDTH // 2 - 125, 100))
         display_text(MEDIUM_FONT, ["You got kicked out", "for not meeting the", "grade requirements"], (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
-    elif student.health == 0:
+    elif student.health <= 0:
         WIN.fill((237, 255, 238))
         WIN.blit(TEXT_FONT.render("Game Over", 1, (0, 0, 0)), (WIDTH // 2 - 125, 100))
         display_text(MEDIUM_FONT, ["You got too sick and", "had to leave school :("], (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
@@ -69,12 +70,13 @@ def draw_end_screen(student):
     WIN.blit(MEDIUM_FONT.render("Menu", 1, (0, 0, 0)), (WIDTH // 2 - 45, HEIGHT // 2 + 140))
     pygame.display.update()
 
-def draw_game_screen(student):
+def draw_game_screen(student, prompt, day):
     WIN.fill((242, 237, 255))
-    prompt = prompts["schoolwork"][0]
-    pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 4 - 105, HEIGHT // 4 + 45, 510, 210))
-    pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(WIDTH // 4 - 100, HEIGHT // 4 + 50, 500, 200))
-    display_text(TEXT_FONT, prompt.name, (WIDTH // 2, HEIGHT // 2 - 10), (0, 0, 0))
+    pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 4 - 105, HEIGHT // 4 + 65, 510, 210))
+    pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(WIDTH // 4 - 100, HEIGHT // 4 + 70, 500, 200))
+    display_text(TEXT_FONT, prompt.name, (WIDTH // 2, HEIGHT // 2 + 10), (0, 0, 0))
+    pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 50, HEIGHT // 2 - 155, 100, 35))
+    display_text(SMALL_FONT, [f"Day {day}"], (WIDTH // 2, HEIGHT // 2 - 122), (255, 255, 255))
 
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH // 2 - 260, HEIGHT - 260, 220, 100))
     pygame.draw.rect(WIN, (237, 255, 238), pygame.Rect(WIDTH // 2 - 255, HEIGHT - 255, 210, 90))
@@ -85,30 +87,42 @@ def draw_game_screen(student):
 
     WIN.blit(SMALL_FONT.render("HEALTH:", 1, (0, 0, 0)), (40, 25))
     pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(220, 30, 350, 30))
-    pygame.draw.rect(WIN, (149, 255, 112), pygame.Rect(220, 30, (350 * (student.health / student.maxes["health"])) // 1, 30))
+    pygame.draw.rect(WIN, (149, 255, 112), pygame.Rect(220, 30, (350 * (min(1, student.health / student.maxes["health"]))) // 1, 30))
 
     WIN.blit(SMALL_FONT.render("STRESS:", 1, (0, 0, 0)), (40, 75))
     pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(220, 80, 350, 30))
-    pygame.draw.rect(WIN, (255, 120, 120), pygame.Rect(220, 80, (350 * (student.stress / student.maxes["stress"])) // 1, 30))
+    pygame.draw.rect(WIN, (255, 120, 120), pygame.Rect(220, 80, (350 * (max(0, student.stress / student.maxes["stress"]))) // 1, 30))
 
     WIN.blit(SMALL_FONT.render("SMARTS:", 1, (0, 0, 0)), (40, 125))
     pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(220, 130, 350, 30))
-    pygame.draw.rect(WIN, (120, 125, 255), pygame.Rect(220, 130, (350 * (student.smarts / student.maxes["smarts"])) // 1, 30))
+    pygame.draw.rect(WIN, (120, 125, 255), pygame.Rect(220, 130, (350 * (min(1, student.smarts / student.maxes["smarts"]))) // 1, 30))
 
     WIN.blit(SMALL_FONT.render("HAPPINESS:", 1, (0, 0, 0)), (40, 175))
     pygame.draw.rect(WIN, (255, 255, 255), pygame.Rect(220, 180, 350, 30))
-    pygame.draw.rect(WIN, (255, 242, 120), pygame.Rect(220, 180, (350 * (student.happiness / student.maxes["happiness"])) // 1, 30))
+    pygame.draw.rect(WIN, (255, 242, 120), pygame.Rect(220, 180, (350 * (min(1, student.happiness / student.maxes["happiness"]))) // 1, 30))
 
     pygame.draw.rect(WIN, (0, 0, 0), pygame.Rect(WIDTH//2 - 55, HEIGHT - 95, 110, 60))
     pygame.draw.rect(WIN, (253, 255, 209), pygame.Rect(WIDTH//2 - 50, HEIGHT - 90, 100, 50))
     WIN.blit(SMALL_FONT.render("PAUSE", 1, (0, 0, 0)), (WIDTH // 2 - 40, HEIGHT - 85))
     pygame.display.update()
 
+def game_over(student):
+    if student.stress >= student.maxes["stress"]:
+        return True
+    elif student.health <= 0:
+        return True
+    elif student.smarts <= 0:
+        return True
+    elif student.happiness <= 0:
+        return True
+    return False
+
 #run game
 def main():
-    student = Student("uni")
-    student.health = 0
-    state = 'pause'
+    day = 0
+    task = "school"
+    prompt = "school"
+    state = 'menu'
     run = True
     while run:
 
@@ -134,9 +148,15 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 - 20 <= mouse[1] <= HEIGHT // 2 + 50:
                         student = Student("high")
+                        day = 1
+                        task = "schoolwork"
+                        prompt = random.choice(prompts["schoolwork"])
                         state = 'play'
-                    if WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 + 100 <= mouse[1] <= HEIGHT // 2 + 170:
+                    elif WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 + 100 <= mouse[1] <= HEIGHT // 2 + 170:
                         student = Student("uni")
+                        day = 1
+                        task = "schoolwork"
+                        prompt = random.choice(prompts["schoolwork"])
                         state = 'play'
                 mouse = pygame.mouse.get_pos()
             draw_select_screen()
@@ -149,8 +169,35 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if WIDTH//2 - 55 <= mouse[0] <= WIDTH//2 + 55 and HEIGHT - 95 <= mouse[1] <= HEIGHT - 35:
                         state = 'pause'
+                    elif WIDTH // 2 - 260 <= mouse[0] <= WIDTH // 2 - 40 and HEIGHT - 260 <= mouse[1] <= HEIGHT - 160:
+                        student.perform_task(prompt.opt1)
+                        if task == "schoolwork":
+                            task = "encounter"
+                        elif task == "encounter":
+                            task = "extra-time"
+                        else:
+                            task = "schoolwork"
+                            day += 1
+                            if day > 10:
+                                state = 'end'
+                        prompt = random.choice(prompts[task])
+                    elif WIDTH - 260 <= mouse[0] <= WIDTH - 40 and HEIGHT - 260 <= mouse[1] <= HEIGHT - 160:
+                        student.perform_task(prompt.opt1)
+                        if task == "schoolwork":
+                            task = "encounter"
+                        elif task == "encounter":
+                            task = "extra-time"
+                        else:
+                            task = "schoolwork"
+                            day += 1
+                            if day > 10:
+                                state = 'end'
+                        prompt = random.choice(prompts[task])
                 mouse = pygame.mouse.get_pos()
-            draw_game_screen(student)
+
+                if game_over(student):
+                    state = 'end'
+            draw_game_screen(student, prompt, day)
 
         elif state == 'pause':
             for event in pygame.event.get():
@@ -159,10 +206,14 @@ def main():
                     pygame.quit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if WIDTH // 2 - 75 <= mouse[0] <= WIDTH // 2 + 75 and HEIGHT // 2 - 20 <= mouse[1] <= HEIGHT // 2 + 50:
+                    if WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 - 110 <= mouse[1] <= HEIGHT // 2 - 40:
+                        state = 'play'
+                    elif WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 + 10 <= mouse[1] <= HEIGHT // 2 + 80:
                         state = 'select'
+                    elif WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 + 130 <= mouse[1] <= HEIGHT // 2 + 200:
+                        state = 'menu'
                 mouse = pygame.mouse.get_pos()
-            draw_pause_screen(student)
+            draw_pause_screen()
             
         elif state == 'end':
             for event in pygame.event.get():
@@ -173,6 +224,10 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if WIDTH // 2 - 75 <= mouse[0] <= WIDTH // 2 + 75 and HEIGHT // 2 - 20 <= mouse[1] <= HEIGHT // 2 + 50:
                         state = 'select'
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if WIDTH // 2 - 200 <= mouse[0] <= WIDTH // 2 + 200 and HEIGHT // 2 + 130 <= mouse[1] <= HEIGHT // 2 + 200:
+                            state = 'menu'
                 mouse = pygame.mouse.get_pos()
             draw_end_screen(student)
 
